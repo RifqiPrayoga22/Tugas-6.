@@ -1,1 +1,853 @@
-# Tugas-6.
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Resume Sesi 6 - Generic Dasar | Dart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #f0f4f8;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            margin: 0;
+            line-height: 1.6;
+            color: #1e293b;
+        }
+        .resume-card {
+            max-width: 1000px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+            padding: 2.8rem 2.5rem;
+            border: 1px solid #e2e8f0;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem 0.7rem;
+            }
+            .resume-card {
+                padding: 1.8rem 1.3rem;
+                border-radius: 2rem;
+            }
+        }
+        .identity-box {
+            background: #1e293b;
+            border-radius: 2rem;
+            padding: 1.8rem 2.2rem;
+            margin-bottom: 2.5rem;
+            color: #f1f5f9;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+        }
+        .identity-fields {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 2rem 2.8rem;
+        }
+        .field {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .field label {
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 0.25rem 1rem;
+            border-radius: 2rem;
+        }
+        .field .placeholder {
+            font-weight: 500;
+            font-size: 1.2rem;
+            color: #ffffff;
+            border-bottom: 2px dashed #64748b;
+            min-width: 140px;
+            padding: 0.15rem 0.3rem;
+            display: inline-block;
+            background: transparent;
+            transition: 0.2s;
+        }
+        .field .placeholder:hover {
+            border-bottom-color: #0ea5e9;
+            cursor: text;
+        }
+        .badge-sesi {
+            background: #0ea5e9;
+            color: white;
+            font-weight: 700;
+            padding: 0.6rem 1.8rem;
+            border-radius: 3rem;
+            font-size: 1.1rem;
+            box-shadow: 0 6px 16px rgba(14, 165, 233, 0.3);
+        }
+        h1 {
+            font-size: 2.3rem;
+            font-weight: 750;
+            color: #0f172a;
+            margin-bottom: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            border-left: 7px solid #0ea5e9;
+            padding-left: 1.6rem;
+        }
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 650;
+            color: #1e293b;
+            margin: 1.8rem 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .section {
+            background: #f8fafc;
+            border-radius: 1.8rem;
+            padding: 1.6rem 1.9rem;
+            margin: 1.8rem 0;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+        .slide-label {
+            display: inline-block;
+            background: #1e293b;
+            color: white;
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 0.25rem 1.2rem;
+            border-radius: 1.5rem;
+            letter-spacing: 0.4px;
+            margin-bottom: 0.8rem;
+        }
+        .explanation {
+            background: #ffffff;
+            border-left: 5px solid #0ea5e9;
+            border-radius: 1rem;
+            padding: 1rem 1.4rem;
+            margin: 1.2rem 0 1rem;
+            font-size: 0.98rem;
+            color: #334155;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        .code-block {
+            background: #1e293b;
+            padding: 1.3rem 1.5rem;
+            border-radius: 1.4rem;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin: 0.9rem 0 1.2rem;
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            position: relative;
+        }
+        .code-block .keyword {
+            color: #c792ea;
+            font-weight: 500;
+        }
+        .code-block .builtin {
+            color: #82aaff;
+        }
+        .code-block .string {
+            color: #c3e88d;
+        }
+        .code-block .number {
+            color: #f78c6c;
+        }
+        .code-block .comment {
+            color: #546e7a;
+            font-style: italic;
+        }
+        .code-block .type {
+            color: #ffcb6b;
+        }
+        .inline-code {
+            background: #e2e8f0;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: #0f172a;
+            font-weight: 500;
+        }
+        .screenshot-wrapper {
+            margin: 1.5rem 0;
+            border-radius: 1.4rem;
+            overflow: hidden;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            background: #e2e8f0;
+        }
+        .screenshot-tab {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 0.5rem 1.2rem;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .screenshot-tab .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot-red {
+            background: #ff5f56;
+        }
+        .dot-yellow {
+            background: #ffbd2e;
+        }
+        .dot-green {
+            background: #27c93f;
+        }
+        .screenshot-tab .filename {
+            margin-left: 0.5rem;
+            opacity: 0.9;
+        }
+        .screenshot-container img {
+            width: 100%;
+            display: block;
+            object-fit: contain;
+            background: #0d1520;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 1.2rem;
+            overflow: hidden;
+            margin: 1.2rem 0;
+            font-size: 0.9rem;
+            border: 1px solid #e2e8f0;
+        }
+        .comparison-table th {
+            background: #1e293b;
+            color: #f0f6ff;
+            font-weight: 600;
+            padding: 0.9rem;
+            text-align: left;
+        }
+        .comparison-table td,
+        .comparison-table th {
+            padding: 0.8rem 1.2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .comparison-table td {
+            color: #334155;
+        }
+        .exercise-box {
+            background: #f0f9ff;
+            border-left: 6px solid #0ea5e9;
+            border-radius: 1.4rem;
+            padding: 1.4rem 1.8rem;
+            margin-top: 1rem;
+            border: 1px solid #e0f2fe;
+        }
+        hr {
+            border: 0.5px solid #e2e8f0;
+            margin: 2rem 0 1.2rem;
+        }
+        .footer-note {
+            text-align: right;
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 1.2rem;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0.2rem;
+        }
+        li {
+            margin-bottom: 0.65rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            color: #334155;
+        }
+        li::before {
+            content: "▹";
+            color: #0ea5e9;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .benefit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .benefit-item {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 1rem 1.2rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        }
+        .benefit-item strong {
+            color: #0284c7;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        .benefit-item p {
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div class="resume-card">
+
+        <div class="identity-box">
+            <div class="identity-fields">
+                <div class="field">
+                    <label>Nama</label>
+                    <span class="placeholder" contenteditable="true">Rifqi Prayoga</span>
+                </div>
+                <div class="field">
+                    <label>NIM</label>
+                    <span class="placeholder" contenteditable="true">251410005</span>
+                </div>
+                <div class="field">
+                    <label>Kelas</label>
+                    <span class="placeholder" contenteditable="true">SI2A</span>
+                </div>
+            </div>
+            <div class="badge-sesi">SESI 6 · GENERIC DASAR</div>
+        </div>
+
+        <h1>Resume Generic Dasar</h1>
+
+        <!-- SLIDE 1 -->
+        <div class="section">
+            <span class="slide-label">Slide 1</span>
+            <h2>Review Sesi 5 - Class Modifiers</h2>
+            <div class="explanation">
+                <p><span class="inline-code">sealed</span> : hierarki tertutup, pattern matching. <span class="inline-code">base</span> : hanya bisa di-extend, tidak di-implement dari luar. <span class="inline-code">final</span> : tidak bisa di-extend/di-implement dari luar.</p>
+            </div>
+            <div class="code-block"><span class="keyword">sealed</span> <span class="keyword">class</span> <span class="type">Result</span> {}
+                <span class="keyword">class</span> <span class="type">Success</span> <span class="keyword">extends</span> <span class="type">Result</span> {}
+                <span class="keyword">class</span> <span class="type">Failure</span> <span class="keyword">extends</span> <span class="type">Result</span> {}</div>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="section">
+            <span class="slide-label">Slide 2</span>
+            <h2>Pengantar Generic</h2>
+            <div class="explanation">
+                <p><strong>Apa itu Generic?</strong> Fitur untuk membuat kode yang bekerja dengan berbagai tipe data. Analog: Kotak penyimpanan yang bisa menampung apa saja, tapi dengan label tipe.</p>
+                <p><strong>Manfaat:</strong></p>
+                <ul>
+                    <li>Type safety (keamanan tipe)</li>
+                    <li>Code reusability (penggunaan ulang)</li>
+                    <li>Compile-time checking</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="section">
+            <span class="slide-label">Slide 3</span>
+            <h2>Masalah Tanpa Generic</h2>
+            <div class="code-block"><span class="keyword">class</span> <span class="type">Box</span> {
+                <span class="keyword">dynamic</span> data; <span class="comment">// Bisa apa saja</span>
+                <span class="type">Box</span>(<span class="keyword">this</span>.data);
+                }
+                <span class="keyword">void</span> <span class="type">main</span>() {
+                <span class="keyword">var</span> box = <span class="type">Box</span>(<span class="number">Hello</span>);
+                <span class="builtin">int</span> value = box.data; <span class="comment">// Runtime error jika bukan int</span>
+                <span class="comment">// Tidak aman!</span>
+                }</div>
+            <div class="explanation">
+                <p>Tanpa generic, pengembang sering menggunakan <span class="inline-code">dynamic</span> agar kotak bisa menampung nilai apapun. Konsekuensinya, kesalahan tipe baru diketahui saat program berjalan (runtime error), bukan saat kompilasi.</p>
+            </div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">slide3_masalah_tanpa_generic.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/masalah%20tanpa%20generic.png" alt="Screenshot VS Code Slide 3">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4 -->
+        <div class="section">
+            <span class="slide-label">Slide 4</span>
+            <h2>Solusi dengan Generic</h2>
+            <div class="code-block"><span class="keyword">class</span> <span class="type">Box</span>&lt;<span class="type">T</span>&gt; {
+                <span class="type">T</span> data;
+                <span class="type">Box</span>(<span class="keyword">this</span>.data);
+                }
+                <span class="keyword">void</span> <span class="type">main</span>() {
+                <span class="keyword">var</span> intBox = <span class="type">Box</span>&lt;<span class="builtin">int</span>&gt;(<span class="number">42</span>);
+                <span class="builtin">int</span> value = intBox.data; <span class="comment">// Aman, terjamin int</span>
+                }</div>
+            <div class="explanation">
+                <p>Dengan menambahkan parameter tipe <span class="inline-code">&lt;T&gt;</span> pada kelas <span class="inline-code">Box</span>, compiler tahu tipe data apa yang akan disimpan.</p>
+            </div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">slide4_solusi_generic.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/solusi%20dengan%20generic.png" alt="Screenshot VS Code Slide 4">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5 -->
+        <div class="section">
+            <span class="slide-label">Slide 5</span>
+            <h2>contoh Sintaks Generic pada class dan function</h2>
+            <div class="code-block"><span class="keyword">class</span> <span class="type">MyClass</span>&lt;<span class="type">T</span>&gt; {
+                <span class="type">T</span> data;
+                <span class="type">MyClass</span>(<span class="keyword">this</span>.data);
+                <span class="type">T</span> getData() { <span class="keyword">return</span> data; }
+                }
+                <span class="type">T</span> <span class="type">myFunc</span>&lt;<span class="type">T</span>&gt;(<span class="type">T</span> value) { <span class="keyword">return</span> value; }
+
+                <span class="keyword">void</span> <span class="type">main</span>() {
+                <span class="keyword">var</span> myIntClass = <span class="type">MyClass</span>&lt;<span class="builtin">int</span>&gt;(<span class="number">10</span>);
+                <span class="keyword">var</span> myStringClass = <span class="type">MyClass</span>&lt;<span class="builtin">String</span>&gt;(<span class="string">"test"</span>);
+                <span class="builtin">print</span>(myIntClass.getData()); <span class="comment">// Output: 10</span>
+                <span class="builtin">print</span>(myStringClass.getData()); <span class="comment">// Output: test</span>
+                <span class="keyword">var</span> intValue = <span class="type">myFunc</span>&lt;<span class="builtin">int</span>&gt;(<span class="number">100</span>);
+                <span class="keyword">var</span> stringValue = <span class="type">myFunc</span>&lt;<span class="builtin">String</span>&gt;(<span class="string">"hello"</span>);
+                <span class="builtin">print</span>(intValue); <span class="comment">// Output: 100</span>
+                <span class="builtin">print</span>(stringValue); <span class="comment">// Output: hello</span>
+                }</div>
+            <div class="explanation">
+                <p>Parameter tipe <span class="inline-code">&lt;T&gt;</span> berfungsi sebagai placeholder yang digantikan dengan tipe konkret saat kelas atau fungsi digunakan.</p>
+            </div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">slide5_sintaks_generic.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/contoh%20sintaks%20generic.png" alt="Screenshot VS Code Slide 5">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6 -->
+        <div class="section">
+            <span class="slide-label">Slide 6</span>
+            <h2>contoh Kelas Box&lt;T&gt;</h2>
+            <div class="code-block"><span class="keyword">class</span> <span class="type">Box</span>&lt;<span class="type">T</span>&gt; {
+                <span class="type">T</span>? _value;
+                <span class="type">Box</span>(<span class="keyword">this</span>._value);
+                <span class="type">T</span>? <span class="keyword">get</span> value => _value;
+                <span class="keyword">void</span> setValue(<span class="type">T</span> value) { _value = value; }
+                }
+                <span class="keyword">void</span> <span class="type">main</span>() {
+                <span class="keyword">var</span> intBox = <span class="type">Box</span>&lt;<span class="builtin">int</span>&gt;(<span class="number">10</span>);
+                <span class="builtin">print</span>(<span class="string">'Int Box Value: ${intBox.value}'</span>);
+                intBox.setValue(<span class="number">20</span>);
+                <span class="builtin">print</span>(<span class="string">'Int Box Value After Set: ${intBox.value}'</span>);
+                <span class="keyword">var</span> stringBox = <span class="type">Box</span>&lt;<span class="builtin">String</span>&gt;(<span class="string">'Hello, Generic!'</span>);
+                <span class="builtin">print</span>(<span class="string">'String Box Value: ${stringBox.value}'</span>);
+                stringBox.setValue(<span class="string">'Hello World'</span>);
+                <span class="builtin">print</span>(<span class="string">'String Box Value After Set: ${stringBox.value}'</span>);
+                <span class="keyword">var</span> doubleBox = <span class="type">Box</span>&lt;<span class="builtin">double</span>&gt;(<span class="number">3.14</span>);
+                <span class="builtin">print</span>(<span class="string">'Double Box Value: ${doubleBox.value}'</span>);
+                }</div>
+            <div class="explanation">
+                <p>Kelas <span class="inline-code">Box&lt;T&gt;</span> menyimpan data bertipe <span class="inline-code">T</span> tanpa peduli apakah itu integer, string, atau double.</p>
+            </div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">slide6_kelas_box.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/kelas%20box.png" alt="Screenshot VS Code Slide 6">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7 -->
+        <div class="section">
+            <span class="slide-label">Slide 7</span>
+            <h2>contoh Kelas Pair&lt;K, V&gt;</h2>
+            <div class="code-block"><span class="keyword">class</span> <span class="type">Pair</span>&lt;<span class="type">K</span>, <span class="type">V</span>&gt; {
+                <span class="type">K</span> key;
+                <span class="type">V</span> value;
+                <span class="type">Pair</span>(<span class="keyword">this</span>.key, <span class="keyword">this</span>.value);
+                <span class="keyword">void</span> printPair() {
+                <span class="builtin">print</span>(<span class="string">'Key: $key, Value: $value'</span>);
+                }
+                }
+                <span class="keyword">void</span> <span class="type">main</span>() {
+                <span class="keyword">var</span> pair1 = <span class="type">Pair</span>&lt;<span class="builtin">String</span>, <span class="builtin">int</span>&gt;(<span class="string">'age'</span>, <span class="number">30</span>);
+                pair1.printPair();
+                <span class="keyword">var</span> pair2 = <span class="type">Pair</span>&lt;<span class="builtin">String</span>, <span class="builtin">String</span>&gt;(<span class="string">'name'</span>, <span class="string">'Alice'</span>);
+                pair2.printPair();
+                <span class="keyword">var</span> pair3 = <span class="type">Pair</span>&lt;<span class="builtin">int</span>, <span class="builtin">double</span>&gt;(<span class="number">1</span>, <span class="number">2.71</span>);
+                pair3.printPair();
+                }</div>
+            <div class="explanation">
+                <p>Generic dengan dua parameter tipe <span class="inline-code">Pair&lt;K, V&gt;</span> memungkinkan penyimpanan dua tipe berbeda dalam satu struktur data.</p>
+            </div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">slide7_kelas_pair.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/kelas%20pair.png" alt="Screenshot VS Code Slide 7">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8 -->
+        <div class="section">
+            <span class="slide-label">Slide 8</span>
+            <h2>menggabungkan dua nilai dengan tipe data yang berbeda</h2>
+            <div class="code-block"><span class="type">String</span> <span class="type">combine</span>&lt;<span class="type">T</span>, <span class="type">U</span>&gt;(<span class="type">T</span> value1, <span class="type">U</span> value2) {
+                <span class="keyword">return</span> <span class="string">'$value1, $value2'</span>;
+                }
+                <span class="keyword">void</span> <span class="type">main</span>() {
+                <span class="keyword">var</span> result1 = <span class="type">combine</span>&lt;<span class="builtin">String</span>, <span class="builtin">int</span>&gt;(<span class="string">'Number is '</span>, <span class="number">10</span>);
+                <span class="builtin">print</span>(result1);
+                <span class="keyword">var</span> result2 = <span class="type">combine</span>&lt;<span class="builtin">int</span>, <span class="builtin">double</span>&gt;(<span class="number">10</span>, <span class="number">20.5</span>);
+                <span class="builtin">print</span>(result2);
+                }</div>
+            <div class="explanation">
+                <p>Fungsi generic dengan dua parameter tipe memungkinkan penggabungan dua nilai berbeda tipe menjadi satu string.</p>
+            </div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">slide8_combine.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/menggabung%20kan%202%20tipe%20yg%20berbeda.png" alt="Screenshot VS Code Slide 8">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9 -->
+        <div class="section">
+            <span class="slide-label">Slide 9</span>
+            <h2>contoh Penggunaan Pair&lt;K, V&gt;</h2>
+            <div class="code-block"><span class="keyword">void</span> <span class="type">main</span>() {
+                <span class="keyword">var</span> pair1 = <span class="type">Pair</span>&lt;<span class="builtin">String</span>, <span class="builtin">int</span>&gt;(<span class="string">'age'</span>, <span class="number">30</span>);
+                pair1.printPair();
+                <span class="keyword">var</span> pair2 = <span class="type">Pair</span>&lt;<span class="builtin">String</span>, <span class="builtin">String</span>&gt;(<span class="string">'name'</span>, <span class="string">'Alice'</span>);
+                pair2.printPair();
+                <span class="keyword">var</span> pair3 = <span class="type">Pair</span>&lt;<span class="builtin">int</span>, <span class="builtin">double</span>&gt;(<span class="number">1</span>, <span class="number">2.71</span>);
+                pair3.printPair();
+                }</div>
+            <div class="explanation">
+                <p>Slide ini menunjukkan bagaimana <span class="inline-code">Pair&lt;K, V&gt;</span> digunakan dalam praktik dengan berbagai kombinasi tipe data.</p>
+            </div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">slide9_penggunaan_pair.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/pair%20KV.png" alt="Screenshot VS Code Slide 9">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10 -->
+        <div class="section">
+            <span class="slide-label">Slide 10</span>
+            <h2>contoh Penggunaan combine&lt;T, U&gt;</h2>
+            <div class="code-block"><span class="keyword">void</span> <span class="type">main</span>() {
+                <span class="keyword">var</span> result1 = <span class="type">combine</span>&lt;<span class="builtin">String</span>, <span class="builtin">int</span>&gt;(<span class="string">'Number is '</span>, <span class="number">10</span>);
+                <span class="builtin">print</span>(result1);
+                <span class="keyword">var</span> result2 = <span class="type">combine</span>&lt;<span class="builtin">int</span>, <span class="builtin">double</span>&gt;(<span class="number">10</span>, <span class="number">20.5</span>);
+                <span class="builtin">print</span>(result2);
+                }</div>
+            <div class="explanation">
+                <p>Demonstrasi pemanggilan fungsi <span class="inline-code">combine</span> dengan berbagai tipe parameter.</p>
+            </div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">slide10_penggunaan_combine.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/combine%20TU%20dart.png" alt="Screenshot VS Code Slide 10">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 11 -->
+        <div class="section">
+            <span class="slide-label">Slide 11</span>
+            <h2>Pembatasan Tipe dan manfaatnya</h2>
+            <div class="benefit-grid">
+                <div class="benefit-item"><strong>Keamanan Tipe yang Lebih Baik</strong><p>Memastikan bahwa kode hanya bekerja dengan tipe data yang kompatibel.</p></div>
+                <div class="benefit-item"><strong>Peningkatan Keterbacaan Kode</strong><p>Membuat kode lebih jelas dan mudah dibaca.</p></div>
+                <div class="benefit-item"><strong>Memungkinkan Penggunaan Method dari Tipe Data Tertentu</strong><p>Memungkinkan memanggil method yang spesifik.</p></div>
+                <div class="benefit-item"><strong>Mencegah Penggunaan Tipe Data yang Tidak Sesuai</strong><p>Mencegah tipe data yang tidak sesuai.</p></div>
+                <div class="benefit-item"><strong>Membantu dalam Desain dan Implementasi</strong><p>Merancang kelas dan fungsi generic lebih terstruktur.</p></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 12 -->
+        <div class="section">
+            <span class="slide-label">Slide 12</span>
+            <h2>Pembatasan Tipe pada Interface dan Class</h2>
+            <div class="code-block"><span class="keyword">void</span> <span class="type">printIterable</span>&lt;<span class="type">T</span> <span class="keyword">extends</span> <span class="type">Iterable</span>&lt;<span class="keyword">dynamic</span>&gt;&gt;(<span class="type">T</span> iterable) {
+                <span class="keyword">for</span> (<span class="keyword">var</span> item <span class="keyword">in</span> iterable) { <span class="builtin">print</span>(item); }
+                }
+                <span class="keyword">void</span> <span class="type">main</span>() {
+                <span class="type">printIterable</span>&lt;<span class="type">List</span>&lt;<span class="builtin">int</span>&gt;&gt;([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);
+                <span class="type">printIterable</span>&lt;<span class="type">Set</span>&lt;<span class="builtin">String</span>&gt;&gt;({<span class="string">'apple'</span>, <span class="string">'banana'</span>});
+                }</div>
+            <div class="explanation">
+                <p>Dengan <span class="inline-code">T extends Iterable</span>, kita membatasi <span class="inline-code">T</span> hanya untuk tipe turunan <span class="inline-code">Iterable</span>.</p>
+            </div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">slide12_constraints_iterable.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/intervace%20dan%20class.png" alt="Screenshot VS Code Slide 12">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 13 -->
+        <div class="section">
+            <span class="slide-label">Slide 13</span>
+            <h2>Pembatasan Tipe - Lanjutan</h2>
+            <div class="explanation">
+                <p>Pembatasan tipe tidak hanya pada <span class="inline-code">Iterable</span>. Bisa juga <span class="inline-code">T extends Comparable</span> untuk tipe yang bisa dibandingkan.</p>
+            </div>
+            <div class="code-block"><span class="keyword">class</span> <span class="type">SortedBox</span>&lt;<span class="type">T</span> <span class="keyword">extends</span> <span class="type">Comparable</span>&gt; {
+                <span class="type">T</span> data;
+                <span class="type">SortedBox</span>(<span class="keyword">this</span>.data);
+                <span class="builtin">int</span> compareTo(<span class="type">SortedBox</span>&lt;<span class="type">T</span>&gt; other) => data.compareTo(other.data);
+                }</div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">slide13_constraints_lanjutan.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/tipe%20lanjutan.png" alt="Screenshot VS Code Slide 13">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 14 -->
+        <div class="section">
+            <span class="slide-label">Slide 14</span>
+            <h2>Generic vs Dynamic vs Object</h2>
+            <table class="comparison-table">
+                <thead><tr><th>Aspect</th><th>Generic&lt;T&gt;</th><th>dynamic</th><th>Object</th></tr></thead>
+                <tbody>
+                    <tr><td>Type Safety</td><td>Compile-time</td><td>Runtime</td><td>Compile-time</td></tr>
+                    <tr><td>Flexibility</td><td>Terbatas (sesuai T)</td><td>Sangat fleksibel</td><td>Terbatas</td></tr>
+                    <tr><td>Performance</td><td>Optimal</td><td>Overhead</td><td>Optimal</td></tr>
+                    <tr><td>Casting</td><td>Tidak perlu</td><td>Tidak perlu</td><td>Perlu casting</td></tr>
+                </tbody>
+            </table>
+            <div class="code-block"><span class="comment">// Contoh perbedaan</span>
+                <span class="type">Box</span>&lt;<span class="builtin">int</span>&gt; box1 = <span class="type">Box</span>&lt;<span class="builtin">int</span>&gt;(<span class="number">42</span>); <span class="comment">// Generic: aman</span>
+                <span class="keyword">dynamic</span> box2 = <span class="number">42</span>; <span class="comment">// Dynamic: tidak aman</span>
+                <span class="type">Object</span> box3 = <span class="number">42</span>; <span class="comment">// Object: perlu casting</span></div>
+            <div class="explanation">
+                <p><span class="inline-code">Generic&lt;T&gt;</span> unggul dalam keamanan tipe dan performa. <span class="inline-code">dynamic</span> fleksibel tapi tidak aman. <span class="inline-code">Object</span> aman namun perlu casting.</p>
+            </div>
+            <div class="screenshot-wrapper">
+
+            </div>
+        </div>
+
+        <!-- SLIDE 15 -->
+        <div class="section">
+            <span class="slide-label">Slide 15</span>
+            <h2>Contoh Cache&lt;T&gt;</h2>
+            <div class="code-block"><span class="keyword">class</span> <span class="type">Cache</span>&lt;<span class="type">T</span>&gt; {
+                <span class="keyword">final</span> <span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">T</span>&gt; _storage = {};
+                <span class="keyword">void</span> set(<span class="type">String</span> key, <span class="type">T</span> value) { _storage[key] = value; }
+                <span class="type">T</span>? <span class="keyword">get</span>(<span class="type">String</span> key) { <span class="keyword">return</span> _storage[key]; }
+                <span class="keyword">void</span> remove(<span class="type">String</span> key) { _storage.remove(key); }
+                }
+                <span class="keyword">void</span> <span class="type">main</span>() {
+                <span class="keyword">var</span> userCache = <span class="type">Cache</span>&lt;<span class="builtin">String</span>&gt;();
+                userCache.set(<span class="string">'name'</span>, <span class="string">'Alice'</span>);
+                <span class="keyword">var</span> productCache = <span class="type">Cache</span>&lt;<span class="type">Product</span>&gt;();
+                productCache.set(<span class="string">'p1'</span>, <span class="type">Product</span>(<span class="string">'Laptop'</span>, <span class="number">1000</span>));
+                }</div>
+            <div class="explanation">
+                <p>Cache adalah penyimpanan sementara berbasis kunci-nilai. Dengan generic, satu kelas Cache dapat menyimpan berbagai tipe data.</p>
+            </div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">slide15_cache.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/contoh%20cache.png" alt="Screenshot VS Code Slide 15">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 16 -->
+        <div class="section">
+            <span class="slide-label">Slide 16</span>
+            <h2>Ringkasan & Latihan</h2>
+            <div class="explanation">
+                <p><strong>Ringkasan:</strong></p>
+                <ul>
+                    <li>Generic membuat kode type-safe dan reusable</li>
+                    <li>Bisa digunakan di class, fungsi, collections</li>
+                    <li>Type inference memudahkan penggunaan</li>
+                    <li>Constraints membatasi tipe yang diperbolehkan</li>
+                </ul>
+                <p style="margin-top:1rem;"><strong>Latihan:</strong></p>
+                <ul>
+                    <li>Buat class Stack&lt;T&gt; dengan method: push(), pop(), peek()</li>
+                    <li>Buat fungsi mergeLists&lt;T&gt;(List&lt;T&gt; a, List&lt;T&gt; b) -> List&lt;T&gt;</li>
+                    <li>Buat class Response&lt;T&gt; dengan field T? data dan String? error</li>
+                </ul>
+                <p style="margin-top:1rem;"><strong>Challenge:</strong></p>
+                <ul>
+                    <li>Buat sistem repository generic</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- LATIHAN SOAL 1 - STACK -->
+        <div class="exercise-box">
+            <span class="slide-label">Slide 16 - Latihan Soal 1</span>
+            <h2 style="margin-top:0.2rem;">Jawaban Soal 1: Class Stack&lt;T&gt;</h2>
+            <div class="code-block"><span class="comment">// Soal 1: Buat class Stack&lt;T&gt; dengan method push(), pop(), peek()</span>
+                <span class="keyword">class</span> <span class="type">Stack</span>&lt;<span class="type">T</span>&gt; {
+                <span class="keyword">final</span> <span class="type">List</span>&lt;<span class="type">T</span>&gt; _stack = [];
+                <span class="keyword">void</span> push(<span class="type">T</span> value) => _stack.add(value);
+                <span class="type">T</span>? pop() => _stack.isEmpty ? <span class="keyword">null</span> : _stack.removeLast();
+                <span class="type">T</span>? peek() => _stack.isEmpty ? <span class="keyword">null</span> : _stack.last;
+                }</div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">soal1_stack.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/soal%201.png" alt="Screenshot VS Code Soal 1 Stack">
+                </div>
+            </div>
+        </div>
+
+        <!-- LATIHAN SOAL 2 - MERGELISTS -->
+        <div class="exercise-box">
+            <span class="slide-label">Slide 16 - Latihan Soal 2</span>
+            <h2 style="margin-top:0.2rem;">Jawaban Soal 2: Fungsi mergeLists&lt;T&gt;</h2>
+            <div class="code-block"><span class="comment">// Soal 2: Buat fungsi mergeLists&lt;T&gt;(List&lt;T&gt; a, List&lt;T&gt; b) -> List&lt;T&gt;</span>
+                <span class="type">List</span>&lt;<span class="type">T</span>&gt; <span class="type">mergeLists</span>&lt;<span class="type">T</span>&gt;(<span class="type">List</span>&lt;<span class="type">T</span>&gt; a, <span class="type">List</span>&lt;<span class="type">T</span>&gt; b) => [...a, ...b];</div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">soal2_merge_lists.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/soal%202.png" alt="Screenshot VS Code Soal 2 mergeLists">
+                </div>
+            </div>
+        </div>
+
+        <!-- LATIHAN SOAL 3 - RESPONSE -->
+        <div class="exercise-box">
+            <span class="slide-label">Slide 16 - Latihan Soal 3</span>
+            <h2 style="margin-top:0.2rem;">Jawaban Soal 3: Class Response&lt;T&gt;</h2>
+            <div class="code-block"><span class="comment">// Soal 3: Buat class Response&lt;T&gt; dengan field T? data dan String? error</span>
+                <span class="keyword">class</span> <span class="type">Response</span>&lt;<span class="type">T</span>&gt; {
+                <span class="type">T</span>? data;
+                <span class="type">String</span>? error;
+                <span class="type">Response</span>({<span class="keyword">this</span>.data, <span class="keyword">this</span>.error});
+                <span class="builtin">bool</span> <span class="keyword">get</span> isSuccess => error == <span class="keyword">null</span>;
+                }</div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">soal3_response.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/soal%203.png" alt="Screenshot VS Code Soal 3 Response">
+                </div>
+            </div>
+        </div>
+
+        <!-- CHALLENGE -->
+        <div class="exercise-box">
+            <span class="slide-label">Slide 16 - Jawaban Challenge</span>
+            <h2 style="margin-top:0.2rem;">Jawaban Challenge (Repository, swap, Triple)</h2>
+            <div class="code-block"><span class="comment">// 4. Class Repository&lt;T&gt; dengan save, getById, getAll</span>
+                <span class="keyword">class</span> <span class="type">Repository</span>&lt;<span class="type">T</span>&gt; {
+                <span class="keyword">final</span> <span class="type">List</span>&lt;<span class="type">T</span>&gt; _items = [];
+                <span class="keyword">void</span> save(<span class="type">T</span> item) => _items.add(item);
+                <span class="type">T</span>? getById(<span class="builtin">int</span> id) {
+                <span class="keyword">return</span> (id &gt;= <span class="number">0</span> && id &lt; _items.length) ? _items[id] : <span class="keyword">null</span>;
+                }
+                <span class="type">List</span>&lt;<span class="type">T</span>&gt; getAll() => <span class="type">List</span>.unmodifiable(_items);
+                }
+
+                <span class="comment">// 5. Fungsi swap&lt;T&gt;</span>
+                <span class="keyword">void</span> <span class="type">swap</span>&lt;<span class="type">T</span>&gt;(<span class="type">List</span>&lt;<span class="type">T</span>&gt; list, <span class="builtin">int</span> i, <span class="builtin">int</span> j) {
+                <span class="keyword">if</span> (i &lt; list.length && j &lt; list.length) {
+                <span class="type">T</span> temp = list[i]; list[i] = list[j]; list[j] = temp;
+                }
+                }
+
+                <span class="comment">// 6. Class Triple&lt;A, B, C&gt;</span>
+                <span class="keyword">class</span> <span class="type">Triple</span>&lt;<span class="type">A</span>, <span class="type">B</span>, <span class="type">C</span>&gt; {
+                <span class="type">A</span> first; <span class="type">B</span> second; <span class="type">C</span> third;
+                <span class="type">Triple</span>(<span class="keyword">this</span>.first, <span class="keyword">this</span>.second, <span class="keyword">this</span>.third);
+                }</div>
+            <div class="screenshot-wrapper">
+                <div class="screenshot-tab">
+                    <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                    <span class="filename">challenge_slide16.dart — VS Code</span>
+                </div>
+                <div class="screenshot-container">
+                    <img src="https://raw.github.com/RifqiPrayoga22/gambar-6/main/chalenge.png" alt="Screenshot VS Code Jawaban Challenge">
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <div class="footer-note">
+            Dart Generic Dasar · Durasi 200 menit · Total 16 slide<br>
+            <span>Rifqi Prayoga, 251410005, SI2A</span>
+        </div>
+    </div>
+</body>
+</html>
